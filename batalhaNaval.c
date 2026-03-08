@@ -2,83 +2,127 @@
 
 int main() {
 
-    // Tamanho fixo do tabuleiro
-    int tamanho = 10;
+    // Constantes do jogo
+    int TAM = 10;
+    int NAVIO = 3;
+    int AGUA = 0;
+    int NAVIO_PARTE = 3;
 
-    // Matriz 10x10 representando o tabuleiro
+    // Tabuleiro 10x10
     int tabuleiro[10][10];
 
-    // Vetores representando os navios (tamanho fixo = 3)
-    int navioHorizontal[3] = {3,3,3};
-    int navioVertical[3] = {3,3,3};
+    int i, j, k;
 
-    // Coordenadas iniciais dos navios
-    int linhaH = 2;   // linha inicial do navio horizontal
-    int colunaH = 4;  // coluna inicial do navio horizontal
-
-    int linhaV = 5;   // linha inicial do navio vertical
-    int colunaV = 1;  // coluna inicial do navio vertical
-
-    int i, j;
-
-    // --------------------------------------------------
-    // 1. Inicializar todo o tabuleiro com água (0)
-    // --------------------------------------------------
-    for(i = 0; i < tamanho; i++){
-        for(j = 0; j < tamanho; j++){
-            tabuleiro[i][j] = 0;
+    // ----------------------------------------
+    // 1. Inicializar o tabuleiro com água
+    // ----------------------------------------
+    for(i = 0; i < TAM; i++){
+        for(j = 0; j < TAM; j++){
+            tabuleiro[i][j] = AGUA;
         }
     }
 
-    // --------------------------------------------------
-    // 2. Validar se o navio horizontal cabe no tabuleiro
-    // --------------------------------------------------
-    if(colunaH + 3 <= tamanho){
+    // ========================================
+    // NAVIO 1 - HORIZONTAL
+    // ========================================
+    int linhaH = 1;
+    int colunaH = 2;
 
-        // Verificar se não há sobreposição
-        int sobreposicao = 0;
-
-        for(i = 0; i < 3; i++){
-            if(tabuleiro[linhaH][colunaH + i] != 0){
-                sobreposicao = 1;
-            }
-        }
-
-        // Posicionar navio se não houver sobreposição
-        if(!sobreposicao){
-            for(i = 0; i < 3; i++){
-                tabuleiro[linhaH][colunaH + i] = navioHorizontal[i];
-            }
-        }
-    }
-
-    // --------------------------------------------------
-    // 3. Validar se o navio vertical cabe no tabuleiro
-    // --------------------------------------------------
-    if(linhaV + 3 <= tamanho){
+    if(colunaH + NAVIO <= TAM){
 
         int sobreposicao = 0;
 
-        for(i = 0; i < 3; i++){
-            if(tabuleiro[linhaV + i][colunaV] != 0){
+        for(k = 0; k < NAVIO; k++){
+            if(tabuleiro[linhaH][colunaH + k] != AGUA){
                 sobreposicao = 1;
             }
         }
 
         if(!sobreposicao){
-            for(i = 0; i < 3; i++){
-                tabuleiro[linhaV + i][colunaV] = navioVertical[i];
+            for(k = 0; k < NAVIO; k++){
+                tabuleiro[linhaH][colunaH + k] = NAVIO_PARTE;
             }
         }
     }
 
-    // --------------------------------------------------
-    // 4. Exibir o tabuleiro
-    // --------------------------------------------------
-    printf("Tabuleiro Batalha Naval (10x10)\n\n");
+    // ========================================
+    // NAVIO 2 - VERTICAL
+    // ========================================
+    int linhaV = 4;
+    int colunaV = 7;
 
-    for(i = 0; i < tamanho; i++){
-        for(j = 0; j < tamanho; j++){
+    if(linhaV + NAVIO <= TAM){
+
+        int sobreposicao = 0;
+
+        for(k = 0; k < NAVIO; k++){
+            if(tabuleiro[linhaV + k][colunaV] != AGUA){
+                sobreposicao = 1;
+            }
+        }
+
+        if(!sobreposicao){
+            for(k = 0; k < NAVIO; k++){
+                tabuleiro[linhaV + k][colunaV] = NAVIO_PARTE;
+            }
+        }
+    }
+
+    // ========================================
+    // NAVIO 3 - DIAGONAL PRINCIPAL (↘)
+    // linha e coluna aumentam juntas
+    // ========================================
+    int linhaD1 = 0;
+    int colunaD1 = 0;
+
+    if(linhaD1 + NAVIO <= TAM && colunaD1 + NAVIO <= TAM){
+
+        int sobreposicao = 0;
+
+        for(k = 0; k < NAVIO; k++){
+            if(tabuleiro[linhaD1 + k][colunaD1 + k] != AGUA){
+                sobreposicao = 1;
+            }
+        }
+
+        if(!sobreposicao){
+            for(k = 0; k < NAVIO; k++){
+                tabuleiro[linhaD1 + k][colunaD1 + k] = NAVIO_PARTE;
+            }
+        }
+    }
+
+    // ========================================
+    // NAVIO 4 - DIAGONAL SECUNDÁRIA (↙)
+    // linha aumenta e coluna diminui
+    // ========================================
+    int linhaD2 = 2;
+    int colunaD2 = 9;
+
+    if(linhaD2 + NAVIO <= TAM && colunaD2 - NAVIO + 1 >= 0){
+
+        int sobreposicao = 0;
+
+        for(k = 0; k < NAVIO; k++){
+            if(tabuleiro[linhaD2 + k][colunaD2 - k] != AGUA){
+                sobreposicao = 1;
+            }
+        }
+
+        if(!sobreposicao){
+            for(k = 0; k < NAVIO; k++){
+                tabuleiro[linhaD2 + k][colunaD2 - k] = NAVIO_PARTE;
+            }
+        }
+    }
+
+    // ----------------------------------------
+    // 2. Mostrar o tabuleiro no console
+    // ----------------------------------------
+    printf("TABULEIRO BATALHA NAVAL (10x10)\n\n");
+
+    for(i = 0; i < TAM; i++){
+        for(j = 0; j < TAM; j++){
             printf("%d ", tabuleiro[i][j]);
         }
         printf("\n");
